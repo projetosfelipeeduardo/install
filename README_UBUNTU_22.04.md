@@ -15,12 +15,17 @@ git clone https://github.com/seu-repositorio/instalador-digitalzap.git
 cd instalador-digitalzap
 ```
 
-### 2. Executar como root
+### 2. Corrigir permissões e formatação (IMPORTANTE!)
 ```bash
-sudo ./install_ubuntu_22.04
+sudo ./fix_permissions.sh
 ```
 
-### 3. Seguir as instruções interativas
+### 3. Executar como root
+```bash
+sudo ./install_simple.sh
+```
+
+### 4. Seguir as instruções interativas
 
 O script irá solicitar:
 - Senha para o usuário deploy
@@ -65,6 +70,42 @@ O script irá solicitar:
 
 ## 🐛 Solução de Problemas
 
+### Erro: "No such file or directory"
+Se você receber este erro ao tentar executar o script:
+
+```bash
+sudo: unable to execute ./installubuntu: No such file or directory
+```
+
+**Solução:**
+```bash
+# 1. Corrigir permissões e formatação
+sudo ./fix_permissions.sh
+
+# 2. Verificar se o arquivo existe
+ls -la install*
+
+# 3. Verificar tipo de arquivo
+file install_simple.sh
+
+# 4. Executar com bash explicitamente
+sudo bash install_simple.sh
+```
+
+### Erro: "Permission denied"
+```bash
+# Corrigir permissões
+chmod +x install_simple.sh
+sudo ./install_simple.sh
+```
+
+### Erro: "Caracteres especiais"
+```bash
+# Remover caracteres especiais do Windows
+sed -i 's/\r$//' install_simple.sh
+sudo ./install_simple.sh
+```
+
 ### Erro: "Usuário deploy já existe"
 O script automaticamente remove e recria o usuário deploy.
 
@@ -74,7 +115,7 @@ O script verifica e cria o grupo sudo se necessário.
 ### Erro: "Permissão negada"
 Execute o script como root:
 ```bash
-sudo ./install_ubuntu_22.04
+sudo ./install_simple.sh
 ```
 
 ### Erro: "Porta já em uso"
@@ -162,7 +203,10 @@ instalador-digitalzap/
 │   └── _inquiry.sh        # Interface usuário
 ├── variables/             # Variáveis e configurações
 ├── utils/                 # Utilitários
-├── install_ubuntu_22.04   # Script principal Ubuntu 22.04
+├── install_simple.sh      # Script principal (recomendado)
+├── install_ubuntu_22.04   # Script Ubuntu 22.04
+├── installubuntu          # Script alternativo
+├── fix_permissions.sh     # Corrigir permissões
 ├── debug_backend.sh       # Script de diagnóstico
 └── install_primaria       # Script original
 ```
